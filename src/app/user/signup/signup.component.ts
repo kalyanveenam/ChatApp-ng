@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/http-service.service';
+import { ToastrService, Toast } from 'ngx-toastr';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -12,34 +14,15 @@ export class SignupComponent implements OnInit {
   public mobileNumber;
   public password;
   public apiKey;
-  constructor(public http: HttpServiceService) { }
+  constructor(public http: HttpServiceService, public toastr: ToastrService, public router: Router) { }
   ngOnInit(): void {
   }
   public signupVerify() {
-    if (!this.firstName) {
-      alert('please enter first name')
+    if (!this.firstName || !this.lastName || !this.email || !this.mobileNumber || !this.password || !this.apiKey) {
+      this.toastr.warning('Mandatory fields are missing')
 
     }
-    if (!this.lastName) {
-      alert('please enter first name')
 
-    }
-    if (!this.email) {
-      alert('please enter first name')
-
-    }
-    if (!this.mobileNumber) {
-      alert('please enter first name')
-
-    }
-    if (!this.password) {
-      alert('please enter first name')
-
-    }
-    if (!this.apiKey) {
-      alert('please enter first name')
-
-    }
     else {
       let userData = {
         'firstName': this.firstName,
@@ -53,7 +36,9 @@ export class SignupComponent implements OnInit {
       this.http.createUser(userData).subscribe(
         data => {
           console.log(data)
-          alert('user is created successfully')
+          this.toastr.success('User is created Successfully')
+          this.toastr.show('Taking you to Sign in page')
+          this.router.navigate(['/']);
 
         },
         error => {

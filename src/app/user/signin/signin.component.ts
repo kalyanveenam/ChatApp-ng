@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpServiceService } from 'src/app/http-service.service';
-
+import { ToastrService, Toast } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { Cookie } from 'ng2-cookies';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -8,12 +10,38 @@ import { HttpServiceService } from 'src/app/http-service.service';
 })
 export class SigninComponent implements OnInit {
 
-  constructor(public http: HttpServiceService) { }
+  public email;
+  public password;
+  constructor(public http: HttpServiceService, public toastr: ToastrService, public router: Router) { }
 
 
 
   ngOnInit(): void {
   }
+  public signInVerify() {
+    if (!this.email || !this.password) {
+      this.toastr.error('Please fill all the mandatory fields')
+    }
+    else {
+      let params = {
+        email: this.email,
+        password: this.password
+      }
 
+      console.log('params')
+      console.log(params)
+      this.http.getUserSignIn(params)
+        .subscribe(response => {
+          this.toastr.success('User is logged in Successfully')
+          console.log(response.data.authToken)
+          Cookie.set('authtoken', response.data.authToken);
+          Cookie.set('receiverId', response.data.userDetails.userId);
+          Cookie.set('receiverName', response.data.userDetails.firstName + ' ' + response.data.userDetails.lastName);
+          this.http.setLocalStorage(response.data.userDetails)
+
+        }
+        )
+    }
+  }
 
 }
