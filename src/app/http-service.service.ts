@@ -28,6 +28,6 @@ export class HttpServiceService {
     localStorage.setItem('userInfo', JSON.stringify(data))
   }
   public getLocalStorageItem = () => {
-    JSON.parse(localStorage.getItem('userInfo'))
+    return JSON.parse(localStorage.getItem('userInfo'));
   }
 }

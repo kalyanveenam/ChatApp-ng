@@ -5,18 +5,19 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SocketService {
-  public baseUrl = "https://chatapi.edwisor.com/api/v1/users";
+  public baseUrl = "https://chatapi.edwisor.com";
   private socket;
+
   constructor() {
     this.socket = io(this.baseUrl);
   }
   public verifyUser = () => {
     return Observable.create((observer) => {
       this.socket.on('verifyUser', (data) => {
-        observer.next(data)
-      })
-    })
-  }
+        observer.next(data);
+      })//end socket
+    })//end Observable
+  }//end verifyUser
   public onlineUserList = () => {
 
     return Observable.create((observer) => {

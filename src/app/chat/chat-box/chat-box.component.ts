@@ -30,15 +30,19 @@ export class ChatBoxComponent implements OnInit {
 
     this.authToken = Cookie.get('authtoken');
     this.userInfo = this.HttpServiceService.getLocalStorageItem();
+
     console.log(this.userInfo)
 
     this.checkStatus();
+    this.getOnlineUserList();
     this.verifyUserConfirmation();
 
 
   }
   checkStatus = () => {
+    console.log('inside check status')
     if (Cookie.get('authtoken') === undefined || Cookie.get('authtoken') === null || Cookie.get('authtoken') === '') {
+
       this.router.navigate(['/']);
       return false;
     }
@@ -46,7 +50,8 @@ export class ChatBoxComponent implements OnInit {
       return true;
     }
   }
-  verifyUserConfirmation = () => {
+  verifyUserConfirmation: any = () => {
+    console.log('inside verify user conf status')
     this.socketservice.verifyUser().subscribe((data) => {
       this.disconnectedSocket = false;
       this.socketservice.setUser(this.authToken);
@@ -55,6 +60,7 @@ export class ChatBoxComponent implements OnInit {
 
   }
   getOnlineUserList = () => {
+    console.log('inside get user list')
     this.socketservice.onlineUserList().subscribe((user) => {
 
       this.userList = [];
