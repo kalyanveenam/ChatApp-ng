@@ -3,11 +3,14 @@ import { HttpServiceService } from 'src/app/http-service.service';
 import { ToastrService, Toast } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
+
 export class SigninComponent implements OnInit {
 
   public email;
@@ -32,13 +35,18 @@ export class SigninComponent implements OnInit {
       console.log(params)
       this.http.getUserSignIn(params)
         .subscribe(response => {
-          this.toastr.success('User is logged in Successfully')
-          console.log(response.data.authToken)
-          Cookie.set('authtoken', response.data.authToken);
-          Cookie.set('receiverId', response.data.userDetails.userId);
-          Cookie.set('receiverName', response.data.userDetails.firstName + ' ' + response.data.userDetails.lastName);
-          this.http.setLocalStorage(response.data.userDetails)
+          if (response.status === 200) {
+            this.toastr.success('User is logged in Successfully')
+            this.router.navigate(['chat']);
 
+            console.log(response.data.authToken)
+
+            Cookie.set('authtoken', response.data.authToken);
+            Cookie.set('receiverId', response.data.userDetails.userId);
+            Cookie.set('receiverName', response.data.userDetails.firstName + ' ' + response.data.userDetails.lastName);
+            this.http.setLocalStorage(response.data.userDetails)
+
+          }
         }
         )
     }

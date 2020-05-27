@@ -20,14 +20,14 @@ export class HttpServiceService {
     return this.http.post(this.baseUrl + '/signup', params);
 
   }
-  public getUserSignIn(data) {
+  public getUserSignIn(data): Observable<any> {
     const params = new HttpParams().set('email', data.email).set('password', data.password);
     return this.http.post(this.baseUrl + '/login?', params)
   }
   public setLocalStorage = (data) => {
     localStorage.setItem('userInfo', JSON.stringify(data))
   }
-  public getLocalStorageItem(data) {
-    JSON.parse(localStorage.getItem(data))
+  public getLocalStorageItem = () => {
+    JSON.parse(localStorage.getItem('userInfo'))
   }
 }

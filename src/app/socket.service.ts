@@ -9,25 +9,25 @@ export class SocketService {
   private socket;
   constructor() {
     this.socket = io(this.baseUrl);
-
   }
   public verifyUser = () => {
     return Observable.create((observer) => {
-      this.socket.io('verifyUser', (data) => {
+      this.socket.on('verifyUser', (data) => {
         observer.next(data)
       })
     })
   }
   public onlineUserList = () => {
+
     return Observable.create((observer) => {
-      this.socket.io('online-user-list', (data) => {
+      this.socket.on('online-user-list', (data) => {
         observer.next(data)
       })
     })
   }
   public disconnectUser = () => {
     return Observable.create((observer) => {
-      this.socket.io('disconnect', () => {
+      this.socket.on('disconnect', () => {
         observer.next()
       })
     })
