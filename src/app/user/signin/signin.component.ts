@@ -39,8 +39,7 @@ export class SigninComponent implements OnInit {
             this.toastr.success('User is logged in Successfully')
             this.router.navigate(['chat']);
 
-            console.log(response.data.authToken)
-
+            console.log(response)
             Cookie.set('authtoken', response.data.authToken);
             Cookie.set('receiverId', response.data.userDetails.userId);
             Cookie.set('receiverName', response.data.userDetails.firstName + ' ' + response.data.userDetails.lastName);

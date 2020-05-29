@@ -37,5 +37,18 @@ export class SocketService {
   public setUser = (data) => {
     this.socket.emit('set-user', data)
   }
+  public chatByUserId = (userId) => {
+    return Observable.create((observer) => {
+      this.socket.on(userId, (data) => {
+        observer.next(data);
 
+      })
+    })
+  }
+  public sendChatMessage = (chatMessageObject) => {
+    this.socket.emit('chat-msg', chatMessageObject)
+  }
+  public markChatAsSeen = (userDetails) => {
+    this.socket.emit('mark-chat-as-seen', userDetails)
+  }
 }
