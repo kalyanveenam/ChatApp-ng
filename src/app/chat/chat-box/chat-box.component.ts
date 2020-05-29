@@ -147,6 +147,7 @@ export class ChatBoxComponent implements OnInit {
       userId: this.userInfo.userId,
       senderId: id
     }
+
     this.socketservice.markChatAsSeen(chatDetails)
   }
   //this.getPreviousChatWithUser()
