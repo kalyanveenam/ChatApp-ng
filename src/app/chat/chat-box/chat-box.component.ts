@@ -22,8 +22,9 @@ export class ChatBoxComponent implements OnInit {
   public userList = [];//stores list of users
   public messageList = [];// maintains list of messages
   public disconnectedSocket: boolean
+  public loadingPreviousChat: boolean
   public messageText: any;
-
+  public pageValue: number = 0;
   constructor(public socketservice: SocketService, public HttpServiceService: HttpServiceService, public router: Router, public toastr: ToastrService, ) { }
   reieverId = Cookie.get('receiverId');
   recieverName = Cookie.get('receiverName');
@@ -149,6 +150,27 @@ export class ChatBoxComponent implements OnInit {
     }
 
     this.socketservice.markChatAsSeen(chatDetails)
+    this.getPreviousChatWithUser()
   }
-  //this.getPreviousChatWithUser()
+  public getPreviousChatWithUser = () => {
+    let previousData = (this.messageList.length > 0 ? this.messageList.slice() : [])
+    this.HttpServiceService.getChat(this.userInfo.userId, this.recieverId, this.pageValue * 10).subscribe(
+      (apiResponse) => {
+        if (apiResponse.status == 200) {
+          this.messageList = apiResponse.data.concat(previousData);
+        }
+        else {
+          this.messageList = previousData;
+          this.toastr.warning('No messages to display')
+        }
+        this.loadingPreviousChat = false;
+      }
+    )
+  }
+  public loadEarlierMessagesOfChat: any = () => {
+    this.loadingPreviousChat = true;
+    this.pageValue++;
+    this.getPreviousChatWithUser();
+  }
+
 }

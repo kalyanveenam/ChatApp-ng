@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { HttpServiceService } from './http-service.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,10 +9,11 @@ export class SocketService {
   public baseUrl = "https://chatapi.edwisor.com";
   private socket;
 
-  constructor() {
+  constructor(public http: HttpServiceService) {
     this.socket = io(this.baseUrl);
   }
   public verifyUser = () => {
+
     return Observable.create((observer) => {
       this.socket.on('verifyUser', (data) => {
         observer.next(data);
@@ -51,4 +53,6 @@ export class SocketService {
   public markChatAsSeen = (userDetails) => {
     this.socket.emit('mark-chat-as-seen', userDetails)
   }
+
+
 }
