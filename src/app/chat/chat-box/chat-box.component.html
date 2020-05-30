@@ -1,1 +1,16 @@
-<p>chat-box works!</p>
+<div class="container">
+    <div class="row">
+        <ul class="list">
+            <li class="p-2 typeOfChats">
+                Online Users:
+            </li>
+            <li class="clearfix cursorPointer" *ngFor="let user of userList"
+                (click)="userSelectedToChat(user.userId, user.name)">
+                <div class="userPresence">
+                    <div class="test">{{user.name}}</div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>
