@@ -5,12 +5,22 @@
                 Online Users:
             </li>
             <li class="clearfix cursorPointer" *ngFor="let user of userList"
-                (click)="userSelectedToChat(user.userId, user.name)">
+                (click)="userSelectedToChat(user.user, user.name)">
                 <div class="userPresence">
                     <div class="test">{{user.name}}</div>
                 </div>
             </li>
 
         </ul>
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Type your message </label>
+                <input type="email" class="form-control" id="exampleInputEmail1" name="messageText"
+                    [(ngModel)]="messageText" aria-describedby="emailHelp" placeholder="Enter message">
+
+            </div>
+
+            <button type="Send" class="btn btn-primary" (keydown)="sendMessageUsingKeyPress($event)">Submit</button>
+        </form>
     </div>
 </div>

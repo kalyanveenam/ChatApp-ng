@@ -80,11 +80,13 @@ export class ChatBoxComponent implements OnInit {
 
   //sending chat message code starts here
   public sendMessageUsingKeyPress = (event: any) => {
+
     if (event.keyCode === 13) {
       this.sendMessage()
     }
   }
   public sendMessage = () => {
+    console.log('Entered sendMessage');
     if (this.messageText) {
       let chatMessageObject = {
         senderName: this.userInfo.firstName + " " + this.userInfo.lastName,
@@ -95,6 +97,7 @@ export class ChatBoxComponent implements OnInit {
         message: this.messageText,
         createdOn: new Date()
       }
+      console.log('This is going to create a message :')
       console.log(chatMessageObject)
       this.socketservice.sendChatMessage(chatMessageObject);
       this.pushToChatWindow(chatMessageObject);
@@ -107,7 +110,11 @@ export class ChatBoxComponent implements OnInit {
   }
   public pushToChatWindow = (data) => {
     this.messageText = '';
+    console.log("data->" + data);
+    console.log(data);
     this.messageList.push(data);
+    console.log("messageList:" + this.messageList);
+    console.log(this.messageList);
     //this.scrollToChatTop = false;
 
   }
@@ -116,8 +123,9 @@ export class ChatBoxComponent implements OnInit {
   //recieving chat message code starts here
   public getMessageFromUser = () => {
     this.socketservice.chatByUserId(this.userInfo.userId).subscribe((data) => {
+      console.log("recieverID:" + this.recieverId)
       this.recieverId == data.userId ? this.messageList.push(data) : '';
-      this.toastr.success(data.senderName + 'says ' + data.message);
+      this.toastr.success(data.senderName + ' says ' + data.message);
       // this.scrollToTop = false;
     })
     //recieving chat message code ends here
@@ -135,11 +143,12 @@ export class ChatBoxComponent implements OnInit {
       else {
         user.chatting = false;
       }
-
+      console.log("isUserSelected:" + user.chatting)
     })
     Cookie.set('recieverId', id)
     Cookie.set('recieverName', name)
-
+    console.log("recieverID Seleted:" + id);
+    console.log("Reciever Name Seleted:" + name);
     this.recieverId = id;
     this.recieverName = name;
     this.messageList = [];
@@ -153,6 +162,7 @@ export class ChatBoxComponent implements OnInit {
     this.getPreviousChatWithUser()
   }
   public getPreviousChatWithUser = () => {
+    console.log(this.messageList.length)
     let previousData = (this.messageList.length > 0 ? this.messageList.slice() : [])
     this.HttpServiceService.getChat(this.userInfo.userId, this.recieverId, this.pageValue * 10).subscribe(
       (apiResponse) => {
