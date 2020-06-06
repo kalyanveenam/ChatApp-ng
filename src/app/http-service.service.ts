@@ -22,7 +22,11 @@ export class HttpServiceService {
 
   }
   public getChat(senderId, recieverId, skip): Observable<any> {
-    return this.http.get("https://chatapi.edwisor.com/api/v1/chat/get/for/user?senderId=?senderId=" + senderId + "&receiverId=" + recieverId + "&skip=" + recieverId + "&authToken=" + Cookie.get('authToken'))
+    console.log("auth-Token:" + Cookie.get('authtoken'));
+    console.log("senderId" + senderId);
+    console.log("rec id" + recieverId);
+    console.log("https://chatapi.edwisor.com/api/v1/chat/get/for/user?senderId=" + senderId + "&receiverId=" + recieverId + "&skip=" + skip + "&authToken=" + Cookie.get('authtoken'))
+    return this.http.get("https://chatapi.edwisor.com/api/v1/chat/get/for/user?senderId=" + senderId + "&receiverId=" + recieverId + "&skip=" + skip + "&authToken=" + Cookie.get('authtoken'))
 
   }
   public getUserSignIn(data): Observable<any> {

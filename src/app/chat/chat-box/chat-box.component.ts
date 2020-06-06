@@ -24,7 +24,7 @@ export class ChatBoxComponent implements OnInit {
   public disconnectedSocket: boolean
   public loadingPreviousChat: boolean
   public messageText: any;
-  public pageValue: number = 0;
+  public pageValue: number = 1;
   constructor(public socketservice: SocketService, public HttpServiceService: HttpServiceService, public router: Router, public toastr: ToastrService, ) { }
   reieverId = Cookie.get('receiverId');
   recieverName = Cookie.get('receiverName');
@@ -37,11 +37,19 @@ export class ChatBoxComponent implements OnInit {
 
     console.log(this.userInfo)
 
-    this.checkStatus();
-    this.getOnlineUserList();
-    this.verifyUserConfirmation();
-    this.getMessageFromUser();
+    this.recieverId = Cookie.get("receiverId");
 
+    this.receiverName = Cookie.get('receiverName');
+    if (this.recieverId != null && this.recieverId != undefined && this.recieverId != '') {
+      this.userSelectedToChat(this.recieverId, this.receiverName)
+    }
+
+    this.checkStatus();
+
+    this.verifyUserConfirmation();
+    this.getOnlineUserList()
+
+    this.getMessageFromUser()
   }
   checkStatus = () => {
     console.log('inside check status')
@@ -167,9 +175,11 @@ export class ChatBoxComponent implements OnInit {
     this.HttpServiceService.getChat(this.userInfo.userId, this.recieverId, this.pageValue * 10).subscribe(
       (apiResponse) => {
         if (apiResponse.status == 200) {
+          console.log(apiResponse)
           this.messageList = apiResponse.data.concat(previousData);
         }
         else {
+          console.log(apiResponse)
           this.messageList = previousData;
           this.toastr.warning('No messages to display')
         }

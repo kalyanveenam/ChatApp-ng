@@ -13,6 +13,7 @@
 
         </ul>
         <form>
+
             <div class="form-group">
                 <label for="exampleInputEmail1">Type your message </label>
                 <input type="email" class="form-control" id="exampleInputEmail1" name="messageText"
@@ -22,5 +23,8 @@
 
             <button type="Send" class="btn btn-primary" (keydown)="sendMessageUsingKeyPress($event)">Submit</button>
         </form>
+        <p class="text-justify" *ngFor="let message of messageList">
+            {{message.message}}
+        </p>
     </div>
 </div>

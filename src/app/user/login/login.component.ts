@@ -56,8 +56,6 @@ export class LoginComponent implements OnInit {
         .subscribe((apiResponse) => {
 
           if (apiResponse.status === 200) {
-            console.log(apiResponse)
-
             Cookie.set('authtoken', apiResponse.data.authToken);
 
             Cookie.set('receiverId', apiResponse.data.userDetails.userId);
