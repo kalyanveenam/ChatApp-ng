@@ -132,7 +132,7 @@ export class ChatBoxComponent implements OnInit {
   public getMessageFromUser = () => {
     this.socketservice.chatByUserId(this.userInfo.userId).subscribe((data) => {
       console.log("recieverID:" + this.recieverId)
-      this.recieverId == data.userId ? this.messageList.push(data) : '';
+      this.recieverId == data.senderId ? this.messageList.push(data) : '';
       this.toastr.success(data.senderName + ' says ' + data.message);
       // this.scrollToTop = false;
     })
@@ -172,7 +172,7 @@ export class ChatBoxComponent implements OnInit {
   public getPreviousChatWithUser = () => {
     console.log(this.messageList.length)
     let previousData = (this.messageList.length > 0 ? this.messageList.slice() : [])
-    this.HttpServiceService.getChat(this.userInfo.userId, this.recieverId, this.pageValue * 10).subscribe(
+    this.HttpServiceService.getChat(this.userInfo.userId, this.recieverId, this.pageValue * 20).subscribe(
       (apiResponse) => {
         if (apiResponse.status == 200) {
           console.log(apiResponse)

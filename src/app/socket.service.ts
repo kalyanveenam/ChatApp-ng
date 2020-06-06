@@ -48,6 +48,7 @@ export class SocketService {
     })
   }
   public sendChatMessage = (chatMessageObject) => {
+    console.log("messange sent:" + chatMessageObject)
     this.socket.emit('chat-msg', chatMessageObject)
   }
   public markChatAsSeen = (userDetails) => {
